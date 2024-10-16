@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>NestScout</title>
+    <link href="https://cdn.jsdelivr.net/npm/beercss@3.7.10/dist/cdn/beer.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/index.css">
+</head>
+<body>
+<h1>NestScout</h1>
+
+<div class="main">
+    <nav class="tabbed large">
+        <a href="/users" class="tab-link">
+            <i>account_circle</i>
+            <span>Users</span>
+        </a>
+        <a href="/listings" class="tab-link">
+            <i>home</i>
+            <span>Listings</span>
+        </a>
+        <a href="/bookings" class="tab-link">
+            <i>check_box</i>
+            <span>Bookings</span>
+        </a>
+    </nav>
+
+    <div class="content">
+        <div class="action-menu">
+            <div class="row">
+                <label class="checkbox">
+                    <input type="checkbox">
+                    <span></span>
+                </label>
+
+                <button class="square round">
+                    <i>edit</i>
+                </button>
+            </div>
+
+            <button class="square round">
+                <i>delete</i>
+            </button>
+        </div>
+    </div>
+
+    <a href="#" class="add-button fixed" style="display: none;">
+        <button class="extend square round">
+            <i>add</i>
+            <span>Add</span>
+        </button>
+    </a>
+
+    <div class="overlay blur"></div>
+    <dialog>
+        <div class="dialog-form"></div>
+    </dialog>
+</div>
+
+<script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.7.10/dist/cdn/beer.min.js"></script>
+<script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script src="/js/main.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,41 @@
+<table class="stripes">
+    <thead>
+    <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Listing ID</th>
+        <th>Renter ID</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Guest Count</th>
+        <th>Nights</th>
+        <th>Total Price</th>
+        <th>Booking Date</th>
+        <th>Cancellation Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% bookings.forEach(booking => { %>
+        <tr>
+            <td>
+                <label class="checkbox">
+                    <input type="checkbox" class="row-checkbox" value="<%= booking.id %>">
+                    <span></span>
+                </label>
+            </td>
+            <td><%= booking.id %></td>
+            <td><%= booking.listing_id %></td>
+            <td><%= booking.renter_id %></td>
+            <td><%= new Date(booking.check_in).toLocaleDateString() %></td>
+            <td><%= new Date(booking.check_out).toLocaleDateString() %></td>
+            <td><%= booking.guest_count %></td>
+            <td><%= booking.nights %></td>
+            <td>$<%= parseFloat(booking.total_price).toFixed(2) %></td>
+            <td><%= new Date(booking.booking_date).toLocaleDateString() %></td>
+            <td><%= booking.cancellation_date ? new Date(booking.cancellation_date).toLocaleDateString() : 'N/A' %></td>
+            <td><%= booking.status %></td>
+        </tr>
+    <% }) %>
+    </tbody>
+</table>

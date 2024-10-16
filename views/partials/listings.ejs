@@ -1,0 +1,51 @@
+<table class="stripes">
+    <thead>
+    <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Owner ID</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Price per Night</th>
+        <th>Country</th>
+        <th>City</th>
+        <th>Street</th>
+        <th>House Number</th>
+        <th>Property Type</th>
+        <th>Rooms</th>
+        <th>Area (m²)</th>
+        <th>Bathroom</th>
+        <th>WiFi</th>
+        <th>Kitchen</th>
+        <th>Max Guests</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% listings.forEach(listing => { %>
+        <tr>
+            <td>
+                <label class="checkbox">
+                    <input type="checkbox" class="row-checkbox" value="<%= listing.id %>">
+                    <span></span>
+                </label>
+            </td>
+            <td><%= listing.id %></td>
+            <td><%= listing.owner_id %></td>
+            <td><%= listing.title %></td>
+            <td><%= listing.description %></td>
+            <td>$<%= parseFloat(listing.price_per_night).toFixed(2) %></td>
+            <td><%= listing.country %></td>
+            <td><%= listing.city %></td>
+            <td><%= listing.street %></td>
+            <td><%= listing.house_number %></td>
+            <td><%= listing.property_type %></td>
+            <td><%= listing.rooms %></td>
+            <td><%= listing.area ? parseFloat(listing.area).toFixed(2) : 'N/A' %></td>
+            <td><%= listing.has_bathroom ? 'Yes' : 'No' %></td>
+            <td><%= listing.has_wifi ? 'Yes' : 'No' %></td>
+            <td><%= listing.has_kitchen ? 'Yes' : 'No' %></td>
+            <td><%= listing.max_guests %></td>
+        </tr>
+    <% }) %>
+    </tbody>
+</table>

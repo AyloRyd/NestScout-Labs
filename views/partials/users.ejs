@@ -1,0 +1,27 @@
+<table class="stripes">
+    <thead>
+    <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Created at</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% users.forEach(user => { %>
+        <tr>
+            <td>
+                <label class="checkbox">
+                    <input type="checkbox" name="selectedUsers" value="<%= user.id %>">
+                    <span></span>
+                </label>
+            </td>
+            <td><%= user.id %></td>
+            <td><%= user.name %></td>
+            <td><%= user.email %></td>
+            <td><%= new Date(user.created_at).toLocaleDateString() %></td>
+        </tr>
+    <% }) %>
+    </tbody>
+</table>

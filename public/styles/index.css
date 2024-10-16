@@ -1,0 +1,100 @@
+* {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+html, body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+    text-align: center;
+    min-height: 100vh;
+    height: auto;
+}
+
+body {
+    padding: 0 70px 70px 70px;
+}
+
+h1 {
+    padding: 150px 0 100px 0;
+    transition: padding 0.5s ease;
+}
+
+.tab-link > i {
+    border-radius: 0;
+}
+
+.content {
+    display: none;
+}
+
+.action-menu {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 7px;
+}
+
+.action-menu button {
+    background: none;
+}
+
+.tabbed {
+    margin-bottom: 30px;
+}
+
+.tabbed > a > i, span {
+    font-size: 24px;
+}
+
+.add-button {
+    bottom: 40px;
+    right: 40px;
+    padding: 15px;
+}
+
+.add-button button {
+    cursor: pointer;
+    background-color: #3f2c6e;
+    color: white;
+}
+
+h5 {
+    margin-bottom: 25px;
+}
+
+.dialog-form > form > nav {
+    margin-top: 60px;
+}
+
+.field {
+    margin: 10px 20px 10px 20px;
+    flex: 1;
+}
+
+button.transparent {
+    font-size: 18px;
+}
+
+.listings-form {
+    width: 500px;
+}
+
+.textarea {
+    height: 150px;
+}
+
+.chip-bool {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+.chip {
+    font-size: 16px;
+}
+
+.row {
+    margin: 0;
+    display: flex;
+}
