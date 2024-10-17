@@ -22,7 +22,7 @@
     </thead>
     <tbody>
     <% listings.forEach(listing => { %>
-        <tr>
+        <tr id="listings-<%= listing.id %>">
             <td>
                 <label class="checkbox">
                     <input type="checkbox" class="row-checkbox" value="<%= listing.id %>">
@@ -30,7 +30,7 @@
                 </label>
             </td>
             <td><%= listing.id %></td>
-            <td><%= listing.owner_id %></td>
+            <td><a href="/users?id=<%= listing.owner_id %>" class="ajax-link"><%= listing.owner_id %></a></td>
             <td><%= listing.title %></td>
             <td><%= listing.description %></td>
             <td>$<%= parseFloat(listing.price_per_night).toFixed(2) %></td>

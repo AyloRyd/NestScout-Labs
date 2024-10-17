@@ -3,18 +3,19 @@ import pool from '../db.js';
 
 const router = express.Router();
 
-router.get('/', async (req, res) => {
+router.get('/adding-form', (req, res) => {
+    res.render('partials/listings_form');
+});
+
+router.get('/:id?', async (req, res) => {
+    const listingId = req.params.id;
     try {
         const [listings] = await pool.query('SELECT * FROM Listings');
-        res.render('partials/listings', { listings });
+        res.render('partials/listings', { listings, listingId });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching listings');
     }
-});
-
-router.get('/adding-form', (req, res) => {
-    res.render('partials/listings_form');
 });
 
 router.post('/', async (req, res) => {

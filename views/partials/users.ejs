@@ -10,7 +10,7 @@
     </thead>
     <tbody>
     <% users.forEach(user => { %>
-        <tr>
+        <tr id="users-<%= user.id %>">
             <td>
                 <label class="checkbox">
                     <input type="checkbox" name="selectedUsers" value="<%= user.id %>">
