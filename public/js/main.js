@@ -113,7 +113,7 @@ $(document).ready(function() {
         }
 
         const activeTab = $('.tab-link.active').attr('href').split('/')[1];
-        axios.post(`/${activeTab}/delete, { ids: selectedIds }`)
+        axios.post(`/${activeTab}/delete`, { ids: selectedIds })
             .then(response => {
                 loadPartial($('.tab-link.active').attr('href'));
             })
