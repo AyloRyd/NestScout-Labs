@@ -13,7 +13,7 @@ router.get('/:id?', async (req, res) => {
         const [listings] = await pool.query('SELECT * FROM Listings');
         res.render('partials/listings', { listings, listingId });
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching listings:', error);
         res.status(500).send('Error fetching listings');
     }
 });
@@ -50,6 +50,26 @@ router.post('/', async (req, res) => {
     } catch (error) {
         console.error('Error adding listing:', error);
         res.status(500).send('Error adding listing');
+    }
+});
+
+router.post('/delete', async (req, res) => {
+    const { ids } = req.body;
+    console.log('Received IDs for deletion:', ids);
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).send('No IDs provided');
+    }
+
+    try {
+        const placeholders = ids.map(() => '?').join(',');
+        const query = `DELETE FROM Listings WHERE id IN (${placeholders})`;
+
+        await pool.query(query, ids);
+        res.status(200).send('Listings deleted successfully');
+    } catch (error) {
+        console.error('Error deleting listings:', error);
+        res.status(500).send('Error deleting listings');
     }
 });
 

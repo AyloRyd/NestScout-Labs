@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
         const [bookings] = await pool.query('SELECT * FROM Bookings');
         res.render('partials/bookings', { bookings });
     } catch (error) {
-        console.error(error);
+        console.error('Error fetching bookings:', error);
         res.status(500).send('Error fetching bookings');
     }
 });
@@ -48,6 +48,26 @@ router.post('/', async (req, res) => {
     } catch (error) {
         console.error('Error adding booking:', error);
         res.status(500).send('Error adding booking');
+    }
+});
+
+router.post('/delete', async (req, res) => {
+    const { ids } = req.body;
+    console.log('Received IDs for deletion:', ids);
+
+    if (!ids || !Array.isArray(ids) || ids.length === 0) {
+        return res.status(400).send('No IDs provided');
+    }
+
+    try {
+        const placeholders = ids.map(() => '?').join(',');
+        const query = `DELETE FROM Bookings WHERE id IN (${placeholders})`;
+
+        await pool.query(query, ids);
+        res.status(200).send('Bookings deleted successfully');
+    } catch (error) {
+        console.error('Error deleting bookings:', error);
+        res.status(500).send('Error deleting bookings');
     }
 });
 
