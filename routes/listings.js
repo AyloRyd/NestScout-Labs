@@ -73,4 +73,53 @@ router.post('/delete', async (req, res) => {
     }
 });
 
+router.get('/edit-form/:id', async (req, res) => {
+    const listingId = req.params.id;
+
+    try {
+        const [listingResult] = await pool.query('SELECT * FROM Listings WHERE id = ?', [listingId]);
+
+        if (listingResult.length === 0) {
+            return res.status(404).send('Listing not found');
+        }
+
+        const listing = listingResult[0];
+
+        res.render('partials/listings_edit_form', { listing });
+    } catch (error) {
+        console.error('Error fetching listing data:', error);
+        res.status(500).send('Error fetching listing data');
+    }
+});
+
+// POST update listing data
+router.post('/update', async (req, res) => {
+    const {
+        id, title, description, price_per_night,
+        property_type, rooms, area,
+        has_bathroom, has_wifi, has_kitchen, max_guests
+    } = req.body;
+
+    try {
+        await pool.query(
+            `UPDATE Listings SET title = ?, description = ?, price_per_night = ?, 
+                                 property_type = ?, rooms = ?, area = ?, 
+                                 has_bathroom = ?, has_wifi = ?, has_kitchen = ?, max_guests = ? 
+             WHERE id = ?`,
+            [
+                title, description, price_per_night,
+                property_type, rooms, area,
+                has_bathroom === 'true', has_wifi === 'true', has_kitchen === 'true',
+                max_guests, id
+            ]
+        );
+
+        res.status(200).send('Listing updated successfully');
+    } catch (error) {
+        console.error('Error updating listing:', error);
+        res.status(500).send('Error updating listing');
+    }
+});
+
+
 export default router;

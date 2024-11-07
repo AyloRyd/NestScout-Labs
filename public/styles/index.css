@@ -98,3 +98,7 @@ button.transparent {
     margin: 0;
     display: flex;
 }
+
+.users-form {
+    width: 400px;
+}

@@ -101,7 +101,7 @@ $(document).ready(function() {
     });
 
     // Sends selected IDs to the server for deletion, and reloads the table after deletion
-    $('.action-menu .square.round i:contains("delete")').parent().on('click', function() {
+    $('.action-menu .delete-button').on('click', function() {
         const selectedIds = [];
         $('table .checkbox input[type="checkbox"]:checked').each(function() {
             selectedIds.push($(this).val());
@@ -127,5 +127,45 @@ $(document).ready(function() {
     $(document).on('click', '.ajax-link', function(event) {
         event.preventDefault();
         loadPartial($(this).attr('href'));
+    });
+
+    // Handles edit button click
+    $('.action-menu .edit-button').on('click', function() {
+        const selectedIds = [];
+        $('table .checkbox input[type="checkbox"]:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        if (selectedIds.length > 1) {
+            alert('Please select only one user to edit.');
+            return;
+        }
+
+        const activeTab = $('.tab-link.active').attr('href').split('/')[1];
+        const editUrl = `/${activeTab}/edit-form/${selectedIds[0]}`;
+
+        axios.get(editUrl)
+            .then(response => {
+                $('.dialog-form').html(response.data);
+                $('dialog').addClass('active');
+                $('.overlay').addClass('active');
+            })
+            .catch(error => console.error('Error loading edit form:', error));
+    });
+
+    $(document).on('submit', 'form', function(event) {
+        event.preventDefault();
+        const actionUrl = $(this).attr('action');
+        const formData = $(this).serialize();
+
+        axios.post(actionUrl, formData)
+            .then(response => {
+                removeDialog();
+                loadPartial($('.tab-link.active').attr('href'));
+            })
+            .catch(error => {
+                console.error('Error updating booking:', error);
+                alert(error.response ? error.response.data : 'An error occurred');
+            });
     });
 });

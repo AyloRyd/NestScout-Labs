@@ -54,4 +54,43 @@ router.post('/delete', async (req, res) => {
     }
 });
 
+router.get('/edit-form/:id', async (req, res) => {
+    const userId = req.params.id;
+    try {
+        const [user] = await pool.query('SELECT * FROM Users WHERE id = ?', [userId]);
+        if (user.length === 0) {
+            return res.status(404).send('User not found');
+        }
+        res.render('partials/users_edit_form', { user: user[0] });
+    } catch (error) {
+        console.error('Error fetching user for edit:', error);
+        res.status(500).send('Error loading edit form');
+    }
+});
+
+// POST update user data
+router.post('/update', async (req, res) => {
+    const { id, name, email, password } = req.body;
+
+    try {
+        if (password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await pool.query(
+                `UPDATE Users SET name = ?, email = ?, password_hash = ? WHERE id = ?`,
+                [name, email, hashedPassword, id]
+            );
+        } else {
+            await pool.query(
+                `UPDATE Users SET name = ?, email = ? WHERE id = ?`,
+                [name, email, id]
+            );
+        }
+
+        res.status(200).send('User updated successfully');
+    } catch (error) {
+        console.error('Error updating user:', error);
+        res.status(500).send('Error updating user');
+    }
+});
+
 export default router;
