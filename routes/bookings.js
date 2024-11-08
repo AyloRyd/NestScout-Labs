@@ -17,6 +17,42 @@ router.get('/adding-form', (req, res) => {
     res.render('partials/bookings_form');
 });
 
+router.get('/user/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const [bookings] = await pool.query('SELECT * FROM Bookings WHERE renter_id = ?', [userId]);
+        const [user] = await pool.query('SELECT name FROM Users WHERE id = ?', [userId]);
+
+        if (user.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        const userName = user[0].name;
+        res.render('partials/bookings', { bookings, userName, userId });
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+        res.status(500).send('Error fetching bookings');
+    }
+});
+
+router.get('/listing/:listingId', async (req, res) => {
+    const listingId = req.params.listingId;
+    try {
+        const [bookings] = await pool.query('SELECT * FROM Bookings WHERE listing_id = ?', [listingId]);
+        const [listing] = await pool.query('SELECT title FROM Listings WHERE id = ?', [listingId]);
+
+        if (listing.length === 0) {
+            return res.status(404).send('Listing not found');
+        }
+
+        const listingTitle = listing[0].title;
+        res.render('partials/bookings', { bookings, listingTitle, listingId });
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+        res.status(500).send('Error fetching bookings');
+    }
+});
+
 router.post('/', async (req, res) => {
     const { listing_id, renter_id, check_in, check_out, guest_count } = req.body;
 

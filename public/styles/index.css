@@ -99,6 +99,24 @@ button.transparent {
     display: flex;
 }
 
+.space-between {
+    display: flex;
+    justify-content: space-between;
+}
+
 .users-form {
     width: 400px;
+}
+
+.link {
+    cursor: pointer;
+}
+
+.filled-button {
+    background-color: #3f2c6e;
+    color: white;
+}
+
+.table-header {
+    margin-bottom: 20px;
 }

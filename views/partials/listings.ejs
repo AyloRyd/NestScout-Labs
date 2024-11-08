@@ -13,11 +13,12 @@
         <th>House Number</th>
         <th>Property Type</th>
         <th>Rooms</th>
+        <th>Max Guests</th>
         <th>Area (m²)</th>
         <th>Bathroom</th>
         <th>WiFi</th>
         <th>Kitchen</th>
-        <th>Max Guests</th>
+        <th>To listing's bookings</th>
     </tr>
     </thead>
     <tbody>
@@ -40,12 +41,26 @@
             <td><%= listing.house_number %></td>
             <td><%= listing.property_type %></td>
             <td><%= listing.rooms %></td>
+            <td><%= listing.max_guests %></td>
             <td><%= listing.area ? parseFloat(listing.area).toFixed(2) : 'N/A' %></td>
             <td><%= listing.has_bathroom ? 'Yes' : 'No' %></td>
             <td><%= listing.has_wifi ? 'Yes' : 'No' %></td>
             <td><%= listing.has_kitchen ? 'Yes' : 'No' %></td>
-            <td><%= listing.max_guests %></td>
+            <td>
+                <button class="filled-button">
+                    Bookings
+                </button>
+            </td>
         </tr>
     <% }) %>
     </tbody>
 </table>
+
+<% if (typeof userName !== 'undefined' && typeof userId !== 'undefined') { %>
+    <div class="listings-header table-header row space-between">
+        <h5>Listings of user <%= userName %> (user_id = <%= userId %>)</h5>
+        <button class="back-to-users">
+            <i>arrow_back</i> Back to users
+        </button>
+    </div>
+<% } %>

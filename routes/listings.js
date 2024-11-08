@@ -18,6 +18,24 @@ router.get('/:id?', async (req, res) => {
     }
 });
 
+router.get('/user/:userId', async (req, res) => {
+    const userId = req.params.userId;
+    try {
+        const [listings] = await pool.query('SELECT * FROM Listings WHERE owner_id = ?', [userId]);
+        const [user] = await pool.query('SELECT name FROM Users WHERE id = ?', [userId]);
+
+        if (user.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
+        const userName = user[0].name;
+        res.render('partials/listings', { listings, userName, userId });
+    } catch (error) {
+        console.error('Error fetching listings:', error);
+        res.status(500).send('Error fetching listings');
+    }
+});
+
 router.post('/', async (req, res) => {
     const {
         owner_id, title, description,

@@ -1,36 +1,48 @@
 $(document).ready(function() {
+    let currentUrl = '/users';
+
     // Loads a partial view and optionally scrolls to an ID within the table
     const loadPartial = (url) => {
-        axios.get(url)
+        currentUrl = url;
+        return axios.get(url)
             .then(response => {
+                $('.table-header').remove();
+
                 $('.content').find('table').remove().end()
                     .css('display', 'block').append(response.data);
                 $('.add-button').show();
 
-                const pathParts = url.split('?')[0].split('/');
-                const tableName = `/${pathParts[pathParts.length - 1] || pathParts[pathParts.length - 2]}`;
-
-                $('.tab-link').removeClass('active');
-                $(`.tab-link[href="${tableName}"]`).addClass('active');
+                const $tableHeader = $('.table-header');
+                if ($tableHeader.length) {
+                    $('.content').prepend($tableHeader);
+                }
 
                 const scrollToId = new URLSearchParams(url.split('?')[1]).get('id');
-                if (scrollToId) {
-                    const $targetRow = $(`#${tableName.replace('/', '')}-${scrollToId}`);
+                const basePath = `/${currentUrl.split('/')[1]}`;
 
-                    $('html, body').animate({
-                        scrollTop: $targetRow.offset().top
-                    }, 500, () => {
-                        $targetRow.fadeIn('slow').fadeOut('slow').fadeIn('slow');
-                    });
+                if (scrollToId) {
+                    const $targetRow = $(`#${basePath.slice(1).split('?')[0]}-${scrollToId}`);
+
+                    if ($targetRow.length) {
+                        $('html, body').animate({
+                            scrollTop: $targetRow.offset().top
+                        }, 500, () => {
+                            $targetRow.fadeIn('slow').fadeOut('slow').fadeIn('slow');
+                        });
+                    } else {
+                        console.warn(`No element found with ID ${scrollToId}`);
+                    }
                 }
+
+                $('.tab-link').removeClass('active');
+                $(`.tab-link[href="${basePath.split('?')[0]}"]`).addClass('active');
             })
             .catch(error => console.error('Error fetching partial:', error));
     };
 
     // Loads the form for adding a new entry and displays it in the dialog
     const loadForm = (tableName) => {
-        axios.get(`/${tableName}/adding-form`)
-    .then(response => {
+        axios.get(`/${tableName}/adding-form`).then(response => {
             if (response.data.includes('<form')) {
                 console.log("Form loaded successfully.");
                 $('.dialog-form').html(response.data);
@@ -39,8 +51,7 @@ $(document).ready(function() {
             }
             $('dialog').addClass('active');
             $('.overlay').addClass('active');
-        })
-            .catch(error => console.error('Error loading form:', error));
+        }).catch(error => console.error('Error loading form:', error));
     };
 
     // Closes the dialog and clears the form content
@@ -53,7 +64,6 @@ $(document).ready(function() {
     // Handles tab switching, highlights the active tab, and loads the content for the selected tab
     $('.tab-link').on('click', function(event) {
         event.preventDefault();
-
         $('h1').css('padding', '70px 0 30px 0');
 
         $('.tab-link').removeClass('active');
@@ -77,7 +87,7 @@ $(document).ready(function() {
         axios.post(actionUrl, formData)
             .then(response => {
                 removeDialog();
-                loadPartial($('.tab-link.active').attr('href'));
+                loadPartial(currentUrl); // Reload using the saved URL
             })
             .catch(error => console.error('Error submitting form:', error));
     });
@@ -112,10 +122,13 @@ $(document).ready(function() {
             return;
         }
 
-        const activeTab = $('.tab-link.active').attr('href').split('/')[1];
-        axios.post(`/${activeTab}/delete`, { ids: selectedIds })
+        const baseUrl = currentUrl.split('/')[1].split('?')[0];
+        console.log(baseUrl);
+
+        const deleteUrl = `/${baseUrl}/delete`;
+        axios.post(deleteUrl, { ids: selectedIds })
             .then(response => {
-                loadPartial($('.tab-link.active').attr('href'));
+                loadPartial(currentUrl);
             })
             .catch(error => {
                 console.error('Error deleting items:', error);
@@ -137,7 +150,7 @@ $(document).ready(function() {
         });
 
         if (selectedIds.length > 1) {
-            alert('Please select only one user to edit.');
+            alert('Please select only one item to edit.');
             return;
         }
 
@@ -153,6 +166,7 @@ $(document).ready(function() {
             .catch(error => console.error('Error loading edit form:', error));
     });
 
+    // Handles form submission after editing and reloads the view
     $(document).on('submit', 'form', function(event) {
         event.preventDefault();
         const actionUrl = $(this).attr('action');
@@ -161,11 +175,42 @@ $(document).ready(function() {
         axios.post(actionUrl, formData)
             .then(response => {
                 removeDialog();
-                loadPartial($('.tab-link.active').attr('href'));
+                loadPartial(currentUrl); // Reload using the saved URL
             })
             .catch(error => {
-                console.error('Error updating booking:', error);
+                console.error('Error updating item:', error);
                 alert(error.response ? error.response.data : 'An error occurred');
             });
+    });
+
+    // Load listings for a specific user and show the header
+    $(document).on('click', '.filled-button:contains("Listings")', function() {
+        const userId = $(this).closest('tr').find('input[name="selectedUsers"]').val();
+        const url = `/listings/user/${userId}`;
+        loadPartial(url);
+    });
+
+    // Load bookings for a specific user and show the header
+    $(document).on('click', '.filled-button:contains("Bookings")', function() {
+        const userId = $(this).closest('tr').find('input[name="selectedUsers"]').val();
+        const url = `/bookings/user/${userId}`;
+        loadPartial(url);
+    });
+
+    // Back button to return to users table
+    $(document).on('click', '.back-to-users', function() {
+        loadPartial('/users');
+    });
+
+    // Load bookings for a specific listing and show the header
+    $(document).on('click', '.filled-button:contains("Bookings")', function() {
+        const listingId = $(this).closest('tr').find('input.row-checkbox').val();
+        const url = `/bookings/listing/${listingId}`;
+        loadPartial(url);
+    });
+
+    // Back button to return to listings table
+    $(document).on('click', '.back-to-listings', function() {
+        loadPartial('/listings');
     });
 });

@@ -68,7 +68,6 @@ router.get('/edit-form/:id', async (req, res) => {
     }
 });
 
-// POST update user data
 router.post('/update', async (req, res) => {
     const { id, name, email, password } = req.body;
 

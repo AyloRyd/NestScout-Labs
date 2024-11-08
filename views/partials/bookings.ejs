@@ -39,3 +39,21 @@
     <% }) %>
     </tbody>
 </table>
+
+<% if (typeof userName !== 'undefined' && typeof userId !== 'undefined') { %>
+    <div class="bookings-header table-header row space-between">
+        <h5>Bookings of user <%= userName %> (user_id = <%= userId %>)</h5>
+        <button class="back-to-users">
+            <i>arrow_back</i> Back to users
+        </button>
+    </div>
+<% } %>
+
+<% if (typeof listingTitle !== 'undefined' && typeof listingId !== 'undefined') { %>
+    <div class="bookings-header table-header row space-between">
+        <h5>Bookings of listing with listing_id = <%= listingId %></h5>
+        <button class="back-to-listings">
+            <i>arrow_back</i> Back to listings
+        </button>
+    </div>
+<% } %>

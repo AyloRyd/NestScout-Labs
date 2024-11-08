@@ -6,6 +6,8 @@
         <th>Name</th>
         <th>Email</th>
         <th>Created at</th>
+        <th>To user's listings</th>
+        <th>To user's bookings</th>
     </tr>
     </thead>
     <tbody>
@@ -21,6 +23,16 @@
             <td><%= user.name %></td>
             <td><%= user.email %></td>
             <td><%= new Date(user.created_at).toLocaleDateString() %></td>
+            <td>
+                <button class="filled-button">
+                    Listings
+                </button>
+            </td>
+            <td>
+                <button class="filled-button">
+                    Bookings
+                </button>
+            </td>
         </tr>
     <% }) %>
     </tbody>
