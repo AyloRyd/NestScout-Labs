@@ -5,6 +5,7 @@ import indexRoutes from './routes/index.js';
 import userRoutes from './routes/users.js';
 import listingRoutes from './routes/listings.js';
 import bookingRoutes from './routes/bookings.js';
+import customSQLqueryRoutes from './routes/custom-sql-query.js';
 
 config();
 
@@ -20,6 +21,7 @@ app.use('/', indexRoutes);
 app.use('/users', userRoutes);
 app.use('/listings', listingRoutes);
 app.use('/bookings', bookingRoutes);
+app.use('/custom-sql-query', customSQLqueryRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);

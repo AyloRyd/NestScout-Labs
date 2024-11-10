@@ -1,0 +1,26 @@
+<div class="sql-query-container">
+    <h5>
+        Here you can run your own every custom SQL query to these three tables and see result in table format
+    </h5>
+
+    <form class="sql-form" action="/custom-sql-query/run" method="POST">
+        <div class="field textarea label border round sql-query-input">
+            <textarea name="sql-query" id="sql-query" required></textarea>
+            <label for="sql-query">Enter custom SQL query</label>
+        </div>
+        <button type="submit" class="filled-button">Run</button>
+    </form>
+</div>
+
+<script>
+    $(document).ready(function() {
+        const $textarea = $('#sql-query');
+
+        $textarea.on('input', function() {
+            this.style.height = 'auto';
+            this.style.height = `${this.scrollHeight + 20}px`;
+        });
+
+        $textarea.trigger('input');
+    });
+</script>

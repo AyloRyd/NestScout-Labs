@@ -13,8 +13,27 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/adding-form', (req, res) => {
-    res.render('partials/bookings_form');
+router.get('/adding-form', async (req, res) => {
+    const userId = req.query.user_id;
+    const listingId = req.query.listing_id;
+
+    try {
+        let listings = [];
+        let users = [];
+
+        if (!listingId) {
+            [listings] = await pool.query('SELECT id, title FROM Listings');
+        }
+
+        if (!userId) {
+            [users] = await pool.query('SELECT id, name FROM Users');
+        }
+
+        res.render('partials/bookings_form', { userId, listingId, listings, users });
+    } catch (error) {
+        console.error('Error fetching data for booking form:', error);
+        res.status(500).send('Error fetching data for booking form');
+    }
 });
 
 router.get('/user/:userId', async (req, res) => {
@@ -58,7 +77,7 @@ router.post('/', async (req, res) => {
 
     try {
         const [listing] = await pool.query(
-            'SELECT price_per_night FROM Listings WHERE id = ?',
+            'SELECT price_per_night, max_guests FROM Listings WHERE id = ?',
             [listing_id]
         );
 
@@ -67,6 +86,17 @@ router.post('/', async (req, res) => {
         }
 
         const pricePerNight = listing[0].price_per_night;
+        const maxGuests = listing[0].max_guests;
+
+        if (guest_count > maxGuests) {
+            return res.status(400).send(`Guest count exceeds maximum allowed (${maxGuests} guests)`);
+        }
+
+        const [user] = await pool.query('SELECT id FROM Users WHERE id = ?', [renter_id]);
+        if (user.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
         const nights = Math.floor((new Date(check_out) - new Date(check_in)) / (1000 * 60 * 60 * 24));
 
         if (nights <= 0) {
@@ -75,9 +105,9 @@ router.post('/', async (req, res) => {
 
         const totalPrice = nights * pricePerNight * guest_count;
         await pool.query(
-            `INSERT INTO Bookings (listing_id, renter_id, check_in, check_out, guest_count, total_price) 
-             VALUES (?, ?, ?, ?, ?, ?)`,
-            [listing_id, renter_id, check_in, check_out, guest_count, totalPrice]
+            `INSERT INTO Bookings (listing_id, renter_id, check_in, check_out, guest_count, total_price, nights) 
+             VALUES (?, ?, ?, ?, ?, ?, ?)`,
+            [listing_id, renter_id, check_in, check_out, guest_count, totalPrice, nights]
         );
 
         res.status(200).send('Booking added successfully');
@@ -189,6 +219,5 @@ router.post('/:id/update', async (req, res) => {
         res.status(500).send('Error updating booking');
     }
 });
-
 
 export default router;

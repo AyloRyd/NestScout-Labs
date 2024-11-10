@@ -2,17 +2,38 @@
     <h5>Add New Booking</h5>
 
     <div class="row">
-        <!-- Listing ID -->
+        <!-- Listing ID (либо readonly, либо select) -->
         <div class="field label border round large">
-            <input type="number" name="listing_id" id="listing_id" required>
-            <label for="listing_id">Listing ID</label>
+            <% if (listingId) { %>
+                <input type="number" name="listing_id" id="listing_id" value="<%= listingId %>" readonly>
+                <label for="listing_id">Listing ID</label>
+            <% } else { %>
+                <select name="listing_id" id="listing_id" required>
+                    <option value="" disabled selected>Select Listing</option>
+                    <% listings.forEach(listing => { %>
+                        <option value="<%= listing.id %>">ID: <%= listing.id %> (<%= listing.title %>)</option>
+                    <% }) %>
+                </select>
+                <label for="listing_id">Listing ID</label>
+            <% } %>
         </div>
 
-        <!-- Renter ID -->
+        <!-- Renter ID (либо readonly, либо select) -->
         <div class="field label border round large">
-            <input type="number" name="renter_id" id="renter_id" required>
-            <label for="renter_id">Renter ID</label>
+            <% if (userId) { %>
+                <input type="number" name="renter_id" id="renter_id" value="<%= userId %>" readonly>
+                <label for="renter_id">Renter ID</label>
+            <% } else { %>
+                <select name="renter_id" id="renter_id" required>
+                    <option value="" disabled selected>Select User</option>
+                    <% users.forEach(user => { %>
+                        <option value="<%= user.id %>"> ID: <%= user.id %> (<%= user.name %>)</option>
+                    <% }) %>
+                </select>
+                <label for="renter_id">Renter ID</label>
+            <% } %>
         </div>
+    </div>
     </div>
 
     <div class="row">

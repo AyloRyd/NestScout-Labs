@@ -4,7 +4,7 @@
     <div class="row">
         <!-- Owner ID -->
         <div class="field label border round large">
-            <input type="number" name="owner_id" id="owner_id" required>
+            <input type="number" name="owner_id" id="owner_id" value="<%= userId %>" readonly>
             <label for="owner_id">Owner ID</label>
         </div>
 
@@ -25,13 +25,13 @@
         <!-- Price per Night -->
         <div class="field label border round large">
             <input type="number" name="price_per_night" id="price_per_night" step="0.01" required>
-            <label for="price_per_night">Price per Night (USD)</label>
+            <label for="price_per_night">Price per night (USD)</label>
         </div>
 
         <!-- Max Guests -->
         <div class="field label border round large">
             <input type="number" name="max_guests" id="max_guests" required>
-            <label for="max_guests">Max Guests</label>
+            <label for="max_guests">Max guests</label>
         </div>
     </div>
 
@@ -59,7 +59,7 @@
         <!-- House Number -->
         <div class="field label border round large">
             <input type="text" name="house_number" id="house_number" required>
-            <label for="house_number">House Number</label>
+            <label for="house_number">House number</label>
         </div>
     </div>
 
@@ -70,7 +70,7 @@
             <option value="room">Room</option>
             <option value="house">House</option>
         </select>
-        <label for="property_type">Property Type</label>
+        <label for="property_type">Property type</label>
         <i>arrow_drop_down</i>
     </div>
 

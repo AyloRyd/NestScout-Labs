@@ -23,33 +23,50 @@
             <i>dehaze</i>
             <span>Bookings</span>
         </a>
+        <a href="/custom-sql-query" class="tab-link">
+            <i>database</i>
+            <span>Custom SQL query</span>
+        </a>
     </nav>
 
     <div class="content">
         <div class="action-menu">
-            <div class="row">
                 <label class="checkbox">
                     <input type="checkbox">
                     <span></span>
                 </label>
 
-                <button class="square round edit-button">
-                    <i>edit</i>
-                </button>
-            </div>
+                <div class="row">
+                    <button class="new-listing-to-user new-element" style="display: none;">
+                        <i>add</i>
+                        Add new listing to this user
+                    </button>
 
-            <button class="square round delete-button">
-                <i>delete</i>
-            </button>
+                    <button class="new-booking-to-user new-element" style="display: none;">
+                        <i>add</i>
+                        Add new booking to this user
+                    </button>
+
+                    <button class="new-booking-to-listing new-element"  style="display: none;">
+                        <i>add</i>
+                        Add new booking to this listing
+                    </button>
+
+                    <button class="square round edit-button">
+                        <i>edit</i>
+                    </button>
+
+                    <button class="square round delete-button">
+                        <i>delete</i>
+                    </button>
+                </div>
         </div>
     </div>
 
-    <a href="#" class="add-button fixed" style="display: none;">
-        <button class="extend square round">
-            <i>add</i>
-            <span>Add</span>
-        </button>
-    </a>
+    <button class="add-button fixed extend square round filled-button" style="display: none;">
+        <i>add</i>
+        <span>Add new user</span>
+    </button>
 
     <div class="overlay blur"></div>
     <dialog>

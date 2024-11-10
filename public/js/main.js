@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let currentUrl = '/users';
+    let currentUrl = '';
 
     // Loads a partial view and optionally scrolls to an ID within the table
     const loadPartial = (url) => {
@@ -8,9 +8,12 @@ $(document).ready(function() {
             .then(response => {
                 $('.table-header').remove();
 
-                $('.content').find('table').remove().end()
+                $('.content')
+                    .find('table').remove().end()
+                    .find('.sql-query-container').remove().end()
                     .css('display', 'block').append(response.data);
-                $('.add-button').show();
+
+                handleAddButtons();
 
                 const $tableHeader = $('.table-header');
                 if ($tableHeader.length) {
@@ -22,7 +25,6 @@ $(document).ready(function() {
 
                 if (scrollToId) {
                     const $targetRow = $(`#${basePath.slice(1).split('?')[0]}-${scrollToId}`);
-
                     if ($targetRow.length) {
                         $('html, body').animate({
                             scrollTop: $targetRow.offset().top
@@ -40,18 +42,59 @@ $(document).ready(function() {
             .catch(error => console.error('Error fetching partial:', error));
     };
 
+    // Handle add buttons
+    const handleAddButtons = () => {
+        if (currentUrl.includes('/custom-sql-query')) {
+            $('.action-menu').hide();
+        } else {
+            $('.action-menu').show();
+        }
+
+        if (currentUrl.includes('/users')) {
+            $('.new-booking-to-user').show();
+            $('.new-listing-to-user').show();
+        } else if (currentUrl.includes('/listings')) {
+            $('.new-booking-to-listing').show();
+        }
+
+        if (currentUrl.includes('/users')) {
+            $('.add-button').show();
+        } else {
+            $('.add-button').hide();
+        }
+
+        // $('.add-button').show();
+        //
+        // if (currentUrl.includes('/custom-sql-query')) {
+        //     $('.add-button').hide();
+        // }
+
+        if (!currentUrl.includes('/users')) {
+            $('.new-booking-to-user').hide();
+            $('.new-listing-to-user').hide();
+        } else if (!currentUrl.includes('/listings')) {
+            $('.new-booking-to-listing').hide();
+        }
+
+        if (currentUrl.includes('/booking')) {
+            $('.new-element').hide();
+        }
+    }
+
     // Loads the form for adding a new entry and displays it in the dialog
     const loadForm = (tableName) => {
-        axios.get(`/${tableName}/adding-form`).then(response => {
-            if (response.data.includes('<form')) {
-                console.log("Form loaded successfully.");
-                $('.dialog-form').html(response.data);
-            } else {
-                console.error("Unexpected content, expected a form.");
-            }
-            $('dialog').addClass('active');
-            $('.overlay').addClass('active');
-        }).catch(error => console.error('Error loading form:', error));
+        axios.get(`/${tableName}/adding-form`)
+            .then(response => {
+                if (response.data.includes('<form')) {
+                    console.log("Form loaded successfully.");
+                    $('.dialog-form').html(response.data);
+                } else {
+                    console.error("Unexpected content, expected a form.");
+                }
+                $('dialog').addClass('active');
+                $('.overlay').addClass('active');
+            })
+            .catch(error => console.error('Error loading form:', error));
     };
 
     // Closes the dialog and clears the form content
@@ -59,6 +102,7 @@ $(document).ready(function() {
         $('dialog').removeClass('active');
         $('.overlay').removeClass('active');
         $('.dialog-form').html('');
+        $(document).off('submit', 'form');
     };
 
     // Handles tab switching, highlights the active tab, and loads the content for the selected tab
@@ -73,9 +117,94 @@ $(document).ready(function() {
     });
 
     // Opens the form dialog for adding a new entry when the "add" button is clicked
-    $('.add-button').on('click', function(event) {
+    $(document).on('click', '.add-button', function(event) {
         event.preventDefault();
         loadForm($('.tab-link.active').attr('href').split('/')[1]);
+    });
+
+    $(document).on('click', '.new-listing-to-user', function(event) {
+        const selectedIds = [];
+        $('table .checkbox input[type="checkbox"]:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        if (selectedIds.length > 1) {
+            alert("You can choose only one user");
+            return;
+        }
+
+        if (selectedIds.length === 0) {
+            alert("You should choose one user");
+            return;
+        }
+
+        const userId = selectedIds[0];
+        const addingUrl = `/listings/adding-form?user_id=${userId}`;
+        axios.get(addingUrl)
+            .then(response => {
+                $('.dialog-form').html(response.data);
+                $('dialog').addClass('active');
+                $('.overlay').addClass('active');
+            })
+            .catch(error => console.error('Error loading form:', error));
+    });
+
+    $(document).on('click', '.new-booking-to-user', function(event) {
+        const selectedIds = [];
+        $('table .checkbox input[type="checkbox"]:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        if (selectedIds.length > 1) {
+            alert("You can choose only one user");
+            return;
+        }
+
+        if (selectedIds.length === 0) {
+            alert("You should choose one user");
+            return;
+        }
+
+        const userId = selectedIds[0];
+        const addingUrl = `/bookings/adding-form?user_id=${userId}`;
+        axios.get(addingUrl)
+            .then(response => {
+                $('.dialog-form').html(response.data);
+                $('dialog').addClass('active');
+                $('.overlay').addClass('active');
+            })
+            .catch(error => console.error('Error loading form:', error));
+    });
+
+    $(document).on('click', '.new-booking-to-listing', function(event) {
+        event.preventDefault();
+
+        const selectedIds = [];
+        $('table .checkbox input[type="checkbox"]:checked').each(function() {
+            selectedIds.push($(this).val());
+        });
+
+        console.log(selectedIds);
+
+        if (selectedIds.length > 1) {
+            alert("You can choose only one listing");
+            return;
+        }
+
+        if (selectedIds.length === 0) {
+            alert("You should choose one listing");
+            return;
+        }
+
+        const listingId = selectedIds[0];
+        const addingUrl = `/bookings/adding-form?listing_id=${listingId}`;
+        axios.get(addingUrl)
+            .then(response => {
+                $('.dialog-form').html(response.data);
+                $('dialog').addClass('active');
+                $('.overlay').addClass('active');
+            })
+            .catch(error => console.error('Error loading booking form:', error));
     });
 
     // Submits the form via AJAX, closes the dialog, and reloads the current tab content
@@ -84,12 +213,20 @@ $(document).ready(function() {
         const actionUrl = $(this).attr('action');
         const formData = $(this).serialize();
 
+        // if ($(this).attr('action') === '/listings') currentUrl = '/users';
+
         axios.post(actionUrl, formData)
             .then(response => {
                 removeDialog();
-                loadPartial(currentUrl); // Reload using the saved URL
+                loadPartial(currentUrl);
             })
-            .catch(error => console.error('Error submitting form:', error));
+            .catch(error => {
+                console.error('Error submitting form:', error);
+                const errorMessage = error.response && error.response.data
+                    ? error.response.data
+                    : 'An error occurred while submitting the form.';
+                alert(errorMessage);
+            });
     });
 
     // Closes the dialog when the "Cancel" button is clicked inside the dialog
@@ -117,18 +254,19 @@ $(document).ready(function() {
             selectedIds.push($(this).val());
         });
 
-        if (selectedIds.length === 0 ||
-            !confirm('Are you sure you want to delete the selected items?')) {
+        if (selectedIds.length === 0 || !confirm('Are you sure you want to delete the selected items?')) {
             return;
         }
 
-        const baseUrl = currentUrl.split('/')[1].split('?')[0];
-        console.log(baseUrl);
+        console.log(currentUrl);
 
+        const baseUrl = currentUrl.split('/')[1].split('?')[0];
         const deleteUrl = `/${baseUrl}/delete`;
         axios.post(deleteUrl, { ids: selectedIds })
             .then(response => {
-                loadPartial(currentUrl);
+                loadPartial(currentUrl).then(() => {
+                    $('.action-menu .checkbox input[type="checkbox"]').prop('checked', false);
+                });
             })
             .catch(error => {
                 console.error('Error deleting items:', error);
@@ -166,23 +304,6 @@ $(document).ready(function() {
             .catch(error => console.error('Error loading edit form:', error));
     });
 
-    // Handles form submission after editing and reloads the view
-    $(document).on('submit', 'form', function(event) {
-        event.preventDefault();
-        const actionUrl = $(this).attr('action');
-        const formData = $(this).serialize();
-
-        axios.post(actionUrl, formData)
-            .then(response => {
-                removeDialog();
-                loadPartial(currentUrl); // Reload using the saved URL
-            })
-            .catch(error => {
-                console.error('Error updating item:', error);
-                alert(error.response ? error.response.data : 'An error occurred');
-            });
-    });
-
     // Load listings for a specific user and show the header
     $(document).on('click', '.filled-button:contains("Listings")', function() {
         const userId = $(this).closest('tr').find('input[name="selectedUsers"]').val();
@@ -191,7 +312,7 @@ $(document).ready(function() {
     });
 
     // Load bookings for a specific user and show the header
-    $(document).on('click', '.filled-button:contains("Bookings")', function() {
+    $(document).on('click', '.user-bookings', function() {
         const userId = $(this).closest('tr').find('input[name="selectedUsers"]').val();
         const url = `/bookings/user/${userId}`;
         loadPartial(url);
@@ -203,7 +324,7 @@ $(document).ready(function() {
     });
 
     // Load bookings for a specific listing and show the header
-    $(document).on('click', '.filled-button:contains("Bookings")', function() {
+    $(document).on('click', '.listing-bookings', function() {
         const listingId = $(this).closest('tr').find('input.row-checkbox').val();
         const url = `/bookings/listing/${listingId}`;
         loadPartial(url);
@@ -213,4 +334,46 @@ $(document).ready(function() {
     $(document).on('click', '.back-to-listings', function() {
         loadPartial('/listings');
     });
+
+    // Rum custom SQL query
+    $(document).on('submit', '.sql-form', function(event) {
+        event.preventDefault();
+        const query = $('#sql-query').val();
+
+        axios.post('/custom-sql-query/run', { query })
+            .then(response => {
+                renderTable(response.data.columns, response.data.rows);
+            })
+            .catch(error => {
+                console.error('Error running SQL query:', error);
+                alert('An error occurred while running the SQL query.');
+            });
+    });
+
+    // Function to generete table for custom SQL query
+    const renderTable = (columns, rows) => {
+        $('.sql-result-table').remove();
+
+        const $table = $('<table>').addClass('sql-result-table stripes');
+        const $thead = $('<thead>');
+        const $headerRow = $('<tr>');
+
+        columns.forEach(col => {
+            $headerRow.append($('<th>').text(col));
+        });
+        $thead.append($headerRow);
+        $table.append($thead);
+
+        const $tbody = $('<tbody>');
+        rows.forEach(row => {
+            const $row = $('<tr>');
+            columns.forEach(col => {
+                $row.append($('<td>').text(row[col] || ''));
+            });
+            $tbody.append($row);
+        });
+        $table.append($tbody);
+
+        $('.sql-query-container').append($table);
+    };
 });

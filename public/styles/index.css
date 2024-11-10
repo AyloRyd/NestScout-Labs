@@ -50,13 +50,6 @@ h1 {
 .add-button {
     bottom: 40px;
     right: 40px;
-    padding: 15px;
-}
-
-.add-button button {
-    cursor: pointer;
-    background-color: #3f2c6e;
-    color: white;
 }
 
 h5 {
@@ -119,4 +112,28 @@ button.transparent {
 
 .table-header {
     margin-bottom: 20px;
+}
+
+.sql-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#sql-query {
+    width: 700px;
+}
+
+.sql-form > button {
+    height: 50px;
+    width: 100px;
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+
+.sql-query-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }

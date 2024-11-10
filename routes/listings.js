@@ -4,7 +4,8 @@ import pool from '../db.js';
 const router = express.Router();
 
 router.get('/adding-form', (req, res) => {
-    res.render('partials/listings_form');
+    const userId = req.query.user_id;
+    res.render('partials/listings_form', { userId });
 });
 
 router.get('/:id?', async (req, res) => {
@@ -46,6 +47,11 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     try {
+        const [user] = await pool.query('SELECT id FROM Users WHERE id = ?', [owner_id]);
+        if (user.length === 0) {
+            return res.status(404).send('User not found');
+        }
+
         await pool.query(
             `INSERT INTO Listings (owner_id, title, description, 
                                    price_per_night, country, city,     
@@ -57,9 +63,9 @@ router.post('/', async (req, res) => {
                 price_per_night, country, city,
                 street, house_number, property_type,
                 rooms, area,
-                has_bathroom === 'false',
-                has_wifi === 'false',
-                has_kitchen === 'false',
+                has_bathroom === 'true',
+                has_wifi === 'true',
+                has_kitchen === 'true',
                 max_guests
             ]
         );
@@ -110,7 +116,6 @@ router.get('/edit-form/:id', async (req, res) => {
     }
 });
 
-// POST update listing data
 router.post('/update', async (req, res) => {
     const {
         id, title, description, price_per_night,
@@ -138,6 +143,5 @@ router.post('/update', async (req, res) => {
         res.status(500).send('Error updating listing');
     }
 });
-
 
 export default router;
