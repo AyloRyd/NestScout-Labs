@@ -10,7 +10,12 @@
         </div>
         <button type="submit" class="filled-button">Run</button>
     </form>
+
+    <div class="table-container"></div>
 </div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.min.js"></script>
 
 <script>
     $(document).ready(function() {
@@ -22,5 +27,23 @@
         });
 
         $textarea.trigger('input');
+
+        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }});
+        require(['vs/editor/editor.main'], function() {
+            const editor = monaco.editor.create(document.getElementById('sql-query').parentElement, {
+                value: $textarea.val(),
+                language: 'sql',
+                theme: 'vs-dark',
+                lineNumbers: 'on'
+            });
+
+            editor.onDidChangeModelContent(() => {
+                $textarea.val(editor.getValue());
+            });
+        });
+
+        $('.sql-form').on('submit', function(event) {
+            $('#sql-query').val(editor.getValue());
+        });
     });
 </script>

@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/', async (req, res) => {
     try {
         const [bookings] = await pool.query('SELECT * FROM Bookings');
-        res.render('partials/bookings', { bookings });
+        res.render('partials/tables/bookings', { bookings });
     } catch (error) {
         console.error('Error fetching bookings:', error);
         res.status(500).send('Error fetching bookings');
@@ -29,7 +29,7 @@ router.get('/adding-form', async (req, res) => {
             [users] = await pool.query('SELECT id, name FROM Users');
         }
 
-        res.render('partials/bookings_form', { userId, listingId, listings, users });
+        res.render('partials/adding-forms/bookings_form', { userId, listingId, listings, users });
     } catch (error) {
         console.error('Error fetching data for booking form:', error);
         res.status(500).send('Error fetching data for booking form');
@@ -47,7 +47,7 @@ router.get('/user/:userId', async (req, res) => {
         }
 
         const userName = user[0].name;
-        res.render('partials/bookings', { bookings, userName, userId });
+        res.render('partials/tables/bookings', { bookings, userName, userId });
     } catch (error) {
         console.error('Error fetching bookings:', error);
         res.status(500).send('Error fetching bookings');
@@ -65,7 +65,7 @@ router.get('/listing/:listingId', async (req, res) => {
         }
 
         const listingTitle = listing[0].title;
-        res.render('partials/bookings', { bookings, listingTitle, listingId });
+        res.render('partials/tables/bookings', { bookings, listingTitle, listingId });
     } catch (error) {
         console.error('Error fetching bookings:', error);
         res.status(500).send('Error fetching bookings');
@@ -146,7 +146,7 @@ router.get('/edit-form/:id', async (req, res) => {
             return res.status(404).send('Booking not found');
         }
 
-        res.render('partials/bookings_edit_form', { booking: booking[0] });
+        res.render('partials/editing-forms/bookings_edit_form', { booking: booking[0] });
     } catch (error) {
         console.error('Error fetching booking for edit:', error);
         res.status(500).send('Error fetching booking for edit');

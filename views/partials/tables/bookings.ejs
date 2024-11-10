@@ -1,0 +1,59 @@
+<table class="stripes">
+    <thead>
+    <tr>
+        <th></th>
+        <th>ID</th>
+        <th>Listing ID</th>
+        <th>Renter ID</th>
+        <th>Check-in</th>
+        <th>Check-out</th>
+        <th>Guest Count</th>
+        <th>Nights</th>
+        <th>Total Price</th>
+        <th>Booking Date</th>
+        <th>Cancellation Date</th>
+        <th>Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% bookings.forEach(booking => { %>
+        <tr id="listings-<%= booking.id %>">
+            <td>
+                <label class="checkbox">
+                    <input type="checkbox" class="row-checkbox" value="<%= booking.id %>">
+                    <span></span>
+                </label>
+            </td>
+            <td><%= booking.id %></td>
+            <td><a href="/listings?id=<%= booking.listing_id %>" class="ajax-link"><%= booking.listing_id %></a></td>
+            <td><a href="/users?id=<%= booking.renter_id %>" class="ajax-link"><%= booking.renter_id %></a></td>
+            <td><%= new Date(booking.check_in).toLocaleDateString() %></td>
+            <td><%= new Date(booking.check_out).toLocaleDateString() %></td>
+            <td><%= booking.guest_count %></td>
+            <td><%= booking.nights %></td>
+            <td>$<%= parseFloat(booking.total_price).toFixed(2) %></td>
+            <td><%= new Date(booking.booking_date).toLocaleDateString() %></td>
+            <td><%= booking.cancellation_date ? new Date(booking.cancellation_date).toLocaleDateString() : 'N/A' %></td>
+            <td><%= booking.status %></td>
+        </tr>
+    <% }) %>
+    </tbody>
+</table>
+
+<% if (typeof userName !== 'undefined' && typeof userId !== 'undefined') { %>
+    <div class="bookings-header table-header row space-between">
+        <h5>Bookings of user <%= userName %> (user_id = <%= userId %>)</h5>
+        <button class="back-to-users">
+            <i>arrow_back</i> Back to users
+        </button>
+    </div>
+<% } %>
+
+<% if (typeof listingTitle !== 'undefined' && typeof listingId !== 'undefined') { %>
+    <div class="bookings-header table-header row space-between">
+        <h5>Bookings of listing with listing_id = <%= listingId %></h5>
+        <button class="back-to-listings">
+            <i>arrow_back</i> Back to listings
+        </button>
+    </div>
+<% } %>

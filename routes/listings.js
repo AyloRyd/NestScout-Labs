@@ -5,14 +5,14 @@ const router = express.Router();
 
 router.get('/adding-form', (req, res) => {
     const userId = req.query.user_id;
-    res.render('partials/listings_form', { userId });
+    res.render('partials/adding-forms/listings_form', { userId });
 });
 
 router.get('/:id?', async (req, res) => {
     const listingId = req.params.id;
     try {
         const [listings] = await pool.query('SELECT * FROM Listings');
-        res.render('partials/listings', { listings, listingId });
+        res.render('partials/tables/listings', { listings, listingId });
     } catch (error) {
         console.error('Error fetching listings:', error);
         res.status(500).send('Error fetching listings');
@@ -30,7 +30,7 @@ router.get('/user/:userId', async (req, res) => {
         }
 
         const userName = user[0].name;
-        res.render('partials/listings', { listings, userName, userId });
+        res.render('partials/tables/listings', { listings, userName, userId });
     } catch (error) {
         console.error('Error fetching listings:', error);
         res.status(500).send('Error fetching listings');
@@ -109,7 +109,7 @@ router.get('/edit-form/:id', async (req, res) => {
 
         const listing = listingResult[0];
 
-        res.render('partials/listings_edit_form', { listing });
+        res.render('partials/editing-forms/listings_edit_form', { listing });
     } catch (error) {
         console.error('Error fetching listing data:', error);
         res.status(500).send('Error fetching listing data');

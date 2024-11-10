@@ -1,0 +1,64 @@
+<form action="/bookings" method="POST">
+    <h5>Add New Booking</h5>
+
+    <div class="row">
+        <!-- Listing ID (либо readonly, либо select) -->
+        <div class="field label border round large">
+            <% if (listingId) { %>
+                <input type="number" name="listing_id" id="listing_id" value="<%= listingId %>" readonly>
+                <label for="listing_id">Listing ID</label>
+            <% } else { %>
+                <select name="listing_id" id="listing_id" required>
+                    <option value="" disabled selected>Select Listing</option>
+                    <% listings.forEach(listing => { %>
+                        <option value="<%= listing.id %>">ID: <%= listing.id %> (<%= listing.title %>)</option>
+                    <% }) %>
+                </select>
+                <label for="listing_id">Listing ID</label>
+            <% } %>
+        </div>
+
+        <!-- Renter ID (либо readonly, либо select) -->
+        <div class="field label border round large">
+            <% if (userId) { %>
+                <input type="number" name="renter_id" id="renter_id" value="<%= userId %>" readonly>
+                <label for="renter_id">Renter ID</label>
+            <% } else { %>
+                <select name="renter_id" id="renter_id" required>
+                    <option value="" disabled selected>Select User</option>
+                    <% users.forEach(user => { %>
+                        <option value="<%= user.id %>"> ID: <%= user.id %> (<%= user.name %>)</option>
+                    <% }) %>
+                </select>
+                <label for="renter_id">Renter ID</label>
+            <% } %>
+        </div>
+    </div>
+    </div>
+
+    <div class="row">
+        <!-- Check-in Date -->
+        <div class="field label border round large">
+            <input type="date" name="check_in" id="check_in" required>
+            <label for="check_in">Check-in Date</label>
+        </div>
+
+        <!-- Check-out Date -->
+        <div class="field label border round large">
+            <input type="date" name="check_out" id="check_out" required>
+            <label for="check_out">Check-out Date</label>
+        </div>
+    </div>
+
+    <!-- Guest Count -->
+    <div class="field label border round large">
+        <input type="number" name="guest_count" id="guest_count" value="1" required>
+        <label for="guest_count">Guest Count</label>
+    </div>
+
+    <!-- Submit Button -->
+    <nav class="center-align no-space">
+        <button type="button" class="transparent link">Cancel</button>
+        <button type="submit" class="transparent link">Add Booking</button>
+    </nav>
+</form>

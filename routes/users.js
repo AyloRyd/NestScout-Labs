@@ -5,14 +5,14 @@ import pool from '../db.js';
 const router = express.Router();
 
 router.get('/adding-form', (req, res) => {
-    res.render('partials/users_form');
+    res.render('partials/adding-forms/users_form');
 });
 
 router.get('/:id?', async (req, res) => {
     const userId = req.params.id;
     try {
         const [users] = await pool.query('SELECT * FROM Users');
-        res.render('partials/users', { users, userId });
+        res.render('partials/tables/users', { users, userId });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error fetching users');
@@ -61,7 +61,7 @@ router.get('/edit-form/:id', async (req, res) => {
         if (user.length === 0) {
             return res.status(404).send('User not found');
         }
-        res.render('partials/users_edit_form', { user: user[0] });
+        res.render('partials/editing-forms/users_edit_form', { user: user[0] });
     } catch (error) {
         console.error('Error fetching user for edit:', error);
         res.status(500).send('Error loading edit form');
