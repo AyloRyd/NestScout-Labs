@@ -7,7 +7,8 @@ import { deletionHandler } from './deletionHandler.js';
 import { linksToParentTableHandler } from './linksToParentTableHandler.js';
 import { editingHandler } from './editingHandler.js';
 import { subordinateTablesHandler } from './subordinateTablesHandler.js';
-import { customQueryHandler } from './customQueryHandler.js';
+import { sqlQueryHandler } from './sqlQueryHandler.js';
+import { sqlQueryTextareaExpansionHandler } from './sqlQueryTextareaExpansionHandler.js';
 
 $(document).ready(function() {
     window.currentUrl = '';
@@ -21,5 +22,6 @@ $(document).ready(function() {
     linksToParentTableHandler();
     editingHandler();
     subordinateTablesHandler();
-    customQueryHandler();
+    sqlQueryHandler();
+    sqlQueryTextareaExpansionHandler();
 });

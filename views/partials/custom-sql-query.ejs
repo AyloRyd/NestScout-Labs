@@ -2,7 +2,6 @@
     <h5>
         Here you can run your own every custom SQL query to these three tables and see result in table format
     </h5>
-
     <form class="sql-form" action="/custom-sql-query/run" method="POST">
         <div class="field textarea label border round sql-query-input">
             <textarea name="sql-query" id="sql-query" required></textarea>
@@ -10,40 +9,16 @@
         </div>
         <button type="submit" class="filled-button">Run</button>
     </form>
-
     <div class="table-container"></div>
 </div>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/editor/editor.main.min.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs/loader.min.js"></script>
-
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         const $textarea = $('#sql-query');
-
         $textarea.on('input', function() {
             this.style.height = 'auto';
             this.style.height = `${this.scrollHeight + 20}px`;
         });
-
         $textarea.trigger('input');
-
-        require.config({ paths: { 'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.33.0/min/vs' }});
-        require(['vs/editor/editor.main'], function() {
-            const editor = monaco.editor.create(document.getElementById('sql-query').parentElement, {
-                value: $textarea.val(),
-                language: 'sql',
-                theme: 'vs-dark',
-                lineNumbers: 'on'
-            });
-
-            editor.onDidChangeModelContent(() => {
-                $textarea.val(editor.getValue());
-            });
-        });
-
-        $('.sql-form').on('submit', function(event) {
-            $('#sql-query').val(editor.getValue());
-        });
-    });
+    })
 </script>

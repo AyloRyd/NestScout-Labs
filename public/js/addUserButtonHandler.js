@@ -1,8 +1,8 @@
-import { loadForm } from './loadForm.js';
+import { loadAddingForm } from './loadAddingForm.js';
 
 export const addUserButtonHandler = () => {
     $(document).on('click', '.add-button', function(event) {
         event.preventDefault();
-        loadForm($('.tab-link.active').attr('href').split('/')[1]);
+        loadAddingForm($('.tab-link.active').attr('href').split('/')[1]);
     });
 }

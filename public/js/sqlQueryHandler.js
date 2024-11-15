@@ -1,4 +1,4 @@
-export const customQueryHandler = () => {
+export const sqlQueryHandler = () => {
     $(document).on('submit', '.sql-form', function(event) {
         event.preventDefault();
         const query = $('#sql-query').val();

@@ -22,33 +22,33 @@ export const loadPartial = (url) => {
 };
 
 const handleAddButtons = () => {
-    if (currentUrl.includes('/custom-sql-query')) {
+    if (window.currentUrl.includes('/custom-sql-query')) {
         $('.action-menu').hide();
     } else {
         $('.action-menu').show();
     }
 
-    if (currentUrl.includes('/users')) {
+    if (window.currentUrl.includes('/users')) {
         $('.new-booking-to-user').show();
         $('.new-listing-to-user').show();
     } else if (currentUrl.includes('/listings')) {
         $('.new-booking-to-listing').show();
     }
 
-    if (currentUrl.includes('/users')) {
+    if (window.currentUrl.includes('/users')) {
         $('.add-button').show();
     } else {
         $('.add-button').hide();
     }
 
-    if (!currentUrl.includes('/users')) {
+    if (!window.currentUrl.includes('/users')) {
         $('.new-booking-to-user').hide();
         $('.new-listing-to-user').hide();
-    } else if (!currentUrl.includes('/listings')) {
+    } else if (!window.currentUrl.includes('/listings')) {
         $('.new-booking-to-listing').hide();
     }
 
-    if (currentUrl.includes('/booking')) {
+    if (window.currentUrl.includes('/booking')) {
         $('.new-element').hide();
     }
 }

@@ -1,4 +1,4 @@
-export const loadForm = (tableName) => {
+export const loadAddingForm = (tableName) => {
     axios.get(`/${tableName}/adding-form`)
         .then(response => {
             if (response.data.includes('<form')) {

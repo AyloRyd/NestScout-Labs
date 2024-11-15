@@ -17,7 +17,7 @@ export const deletionHandler = () => {
     const deleteUrl = `/${baseUrl}/delete`;
     axios.post(deleteUrl, { ids: selectedIds })
         .then(response => {
-            loadPartial(currentUrl).then(() => {
+            loadPartial(window.currentUrl).then(() => {
                 $('.action-menu .checkbox input[type="checkbox"]').prop('checked', false);
             });
         })
