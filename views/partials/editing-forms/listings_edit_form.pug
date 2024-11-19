@@ -1,0 +1,119 @@
+form.listings-form(action="/listings/update" method="POST")
+	h5 Edit Listing
+
+	//- Hidden input for ID
+	input(type="hidden" name="id" value=listing.id)
+
+	.row
+		//- Owner ID (readonly)
+		.field.label.border.round.large
+			input(type="number" name="owner_id" id="owner_id" value=listing.owner_id readonly)
+			label(for="owner_id") Owner ID
+
+		//- Title
+		.field.label.border.round.large
+			input(type="text" name="title" id="title" value=listing.title required)
+			label(for="title") Title
+
+	//- Description
+	.field.textarea.label.border.round
+		textarea(name="description" id="description")= listing.description
+		label(for="description") Description
+
+	.row
+		//- Price per Night
+		.field.label.border.round.large
+			input(type="number" name="price_per_night" id="price_per_night" step="0.01" value=listing.price_per_night required)
+			label(for="price_per_night") Price per Night (USD)
+
+		//- Max Guests
+		.field.label.border.round.large
+			input(type="number" name="max_guests" id="max_guests" value=listing.max_guests required)
+			label(for="max_guests") Max Guests
+
+	.row
+		//- Country (readonly)
+		.field.label.border.round.large
+			input(type="text" name="country" id="country" value=listing.country readonly)
+			label(for="country") Country
+
+		//- City (readonly)
+		.field.label.border.round.large
+			input(type="text" name="city" id="city" value=listing.city readonly)
+			label(for="city") City
+
+	.row
+		//- Street (readonly)
+		.field.label.border.round.large
+			input(type="text" name="street" id="street" value=listing.street readonly)
+			label(for="street") Street
+
+		//- House Number (readonly)
+		.field.label.border.round.large
+			input(type="text" name="house_number" id="house_number" value=listing.house_number readonly)
+			label(for="house_number") House Number
+
+	//- Property Type
+	.field.label.suffix.border.round
+		select(name="property_type" id="property_type" required)
+			option(value="apartment" selected=listing.property_type === 'apartment') Apartment
+			option(value="room" selected=listing.property_type === 'room') Room
+			option(value="house" selected=listing.property_type === 'house') House
+		label(for="property_type") Property Type
+		i arrow_drop_down
+
+	.row
+		//- Rooms
+		.field.label.border.round.large
+			input(type="number" name="rooms" id="rooms" value=listing.rooms required)
+			label(for="rooms") Rooms
+
+		//- Area
+		.field.label.border.round.large
+			input(type="number" name="area" id="area" step="0.01" value=listing.area)
+			label(for="area") Area (m²)
+
+	.chip-bool
+		//- Bathroom
+		div
+			button(type="button" class=`chip ${listing.has_bathroom ? 'fill' : ''}` onclick="toggleChip(this)")
+				i Bathroom
+				| Bathroom
+			input(type="hidden" name="has_bathroom" id="has_bathroom" value=listing.has_bathroom ? 'true' : 'false')
+
+		//- WiFi
+		div
+			button(type="button" class=`chip ${listing.has_wifi ? 'fill' : ''}` onclick="toggleChip(this)")
+				i WiFi
+				| WiFi
+			input(type="hidden" name="has_wifi" id="has_wifi" value=listing.has_wifi ? 'true' : 'false')
+
+		//- Kitchen
+		div
+			button(type="button" class=`chip ${listing.has_kitchen ? 'fill' : ''}` onclick="toggleChip(this)")
+				i Kitchen
+				| Kitchen
+			input(type="hidden" name="has_kitchen" id="has_kitchen" value=listing.has_kitchen ? 'true' : 'false')
+
+	//- Submit Button
+	nav.center-align.no-space
+		button(type="button" class="transparent link") Cancel
+		button(type="submit" class="transparent link") Update
+
+script.
+	function toggleChip(element) {
+		const $button = $(element);
+		const $input = $button.next('input[type="hidden"]');
+		$button.toggleClass('fill');
+		$input.val($button.hasClass('fill') ? "true" : "false");
+	}
+
+	$(document).ready(function() {
+		$('.chip').each(function() {
+			const $chip = $(this);
+			const $input = $chip.next('input[type="hidden"]');
+			if ($input.val() === "true") {
+				$chip.addClass('fill');
+			}
+		});
+	});

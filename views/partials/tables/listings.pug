@@ -1,0 +1,55 @@
+table.stripes
+	thead
+		tr
+			th
+			th ID
+			th Owner ID
+			th Title
+			th Description
+			th Price per Night
+			th Country
+			th City
+			th Street
+			th House Number
+			th Property Type
+			th Rooms
+			th Max Guests
+			th Area (m²)
+			th Bathroom
+			th WiFi
+			th Kitchen
+			th To listing's bookings
+	tbody
+		each listing in listings
+			tr(id=`listings-${listing.id}`)
+				td
+					label.checkbox
+						input.row-checkbox(type="checkbox" value=listing.id)
+						span
+				td= listing.id
+				td
+					a.ajax-link(href=`/users?id=${listing.owner_id}`)= listing.owner_id
+				td= listing.title
+				td= listing.description
+				td= `${parseFloat(listing.price_per_night).toFixed(2)}`
+				td= listing.country
+				td= listing.city
+				td= listing.street
+				td= listing.house_number
+				td= listing.property_type
+				td= listing.rooms
+				td= listing.max_guests
+				td= listing.area ? `${parseFloat(listing.area).toFixed(2)}` : 'N/A'
+				td= listing.has_bathroom ? 'Yes' : 'No'
+				td= listing.has_wifi ? 'Yes' : 'No'
+				td= listing.has_kitchen ? 'Yes' : 'No'
+				td
+					button.filled-button.listing-bookings Bookings
+
+//- Header for specific user's listings
+if typeof userName !== 'undefined' && typeof userId !== 'undefined'
+	.listings-header.table-header.row.space-between
+		h5 Listings of user #{userName} (user_id = #{userId})
+		button.back-to-users
+			i arrow_back
+			span Back to users

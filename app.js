@@ -9,13 +9,13 @@ import customSQLQueryRoutes from './routes/customSQLQuery.js';
 
 config();
 
-const app = express();
+const app = express(); 
 const PORT = process.env.PORT || 3000;
 
-app.set('view engine', 'ejs');
+app.set('view engine', 'pug');
 app.use(express.static('public'));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false })); 
 
 app.use('/', indexRoutes);
 app.use('/users', userRoutes);

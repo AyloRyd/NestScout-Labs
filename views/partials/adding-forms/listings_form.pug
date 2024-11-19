@@ -1,0 +1,112 @@
+form(action="/listings" method="POST" class="listings-form")
+	h5 Add new listing
+
+	.row
+		//- Owner ID
+		.field.label.border.round.large
+			input(type="number" name="owner_id" id="owner_id" value=userId readonly)
+			label(for="owner_id") Owner ID
+
+		//- Title
+		.field.label.border.round.large
+			input(type="text" name="title" id="title" required)
+			label(for="title") Title
+
+	//- Description
+	.field.textarea.label.border.round
+		textarea(name="description" id="description")
+		label(for="description") Description
+
+	.row
+		//- Price per Night
+		.field.label.border.round.large
+			input(type="number" name="price_per_night" id="price_per_night" step="0.01" required)
+			label(for="price_per_night") Price per night (USD)
+
+		//- Max Guests
+		.field.label.border.round.large
+			input(type="number" name="max_guests" id="max_guests" required)
+			label(for="max_guests") Max guests
+
+	.row
+		//- Country
+		.field.label.border.round.large
+			input(type="text" name="country" id="country" required)
+			label(for="country") Country
+
+		//- City
+		.field.label.border.round.large
+			input(type="text" name="city" id="city" required)
+			label(for="city") City
+
+	.row
+		//- Street
+		.field.label.border.round.large
+			input(type="text" name="street" id="street" required)
+			label(for="street") Street
+
+		//- House Number
+		.field.label.border.round.large
+			input(type="text" name="house_number" id="house_number" required)
+			label(for="house_number") House number
+
+	//- Property Type
+	.field.label.suffix.border.round
+		select(name="property_type" id="property_type" required)
+			option(value="apartment") Apartment
+			option(value="room") Room
+			option(value="house") House
+		label(for="property_type") Property type
+		i arrow_drop_down
+
+	.row
+		//- Rooms
+		.field.label.border.round.large
+			input(type="number" name="rooms" id="rooms" required)
+			label(for="rooms") Rooms
+
+		//- Area
+		.field.label.border.round.large
+			input(type="number" name="area" id="area" step="0.01")
+			label(for="area") Area (m²)
+
+	.chip-bool
+		//- Bathroom
+		div
+			button(type="button" class="chip" onclick="toggleChip(this)")
+				i Bathroom
+				| Bathroom
+			input(type="hidden" name="has_bathroom" id="has_bathroom" value="false")
+
+		//- WiFi
+		div
+			button(type="button" class="chip" onclick="toggleChip(this)")
+				i WiFi
+				| WiFi
+			input(type="hidden" name="has_wifi" id="has_wifi" value="false")
+
+		//- Kitchen
+		div
+			button(type="button" class="chip" onclick="toggleChip(this)")
+				i Kitchen
+				| Kitchen
+			input(type="hidden" name="has_kitchen" id="has_kitchen" value="false")
+
+	//- Submit Button
+	nav.center-align.no-space
+		button(type="button" class="transparent link") Cancel
+		button(type="submit" class="transparent link") Add
+
+script.
+	$(document).ready(function() {
+		$('.chip').on('click', function() {
+			const $button = $(this);
+			const $sibling = $button.siblings('.chip');
+
+			$button.toggleClass('fill');
+			$sibling.toggleClass('fill');
+
+			const $input = $button.parent().find('input[type="hidden"]');
+			$input.val($button.hasClass('fill') ? "false" : "true");
+		});
+	});

@@ -1,0 +1,14 @@
+form.users-form(action="/users" method="POST")
+	h5 Add new user
+	.field.label.border.round.large
+		input(type="text" name="name" id="name")
+		label(for="name") Name
+	.field.label.border.round.large
+		input(type="text" name="email" id="email")
+		label(for="email") Email
+	.field.label.border.round.large
+		input(type="password" name="password" id="password" required)
+		label(for="password") Password
+	nav.center-align.no-space
+		button(type="button" class="transparent link") Cancel
+		button(type="submit" class="transparent link") Add

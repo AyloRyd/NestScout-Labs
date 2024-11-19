@@ -1,0 +1,48 @@
+form(action="/bookings" method="POST")
+	h5 Add New Booking
+
+	.row
+		//- Listing ID (either readonly or select)
+		.field.label.border.round.large
+			if listingId
+				input(type="number" name="listing_id" id="listing_id" value=listingId readonly)
+				label(for="listing_id") Listing ID
+			else
+				select(name="listing_id" id="listing_id" required)
+					option(value="" disabled selected) Select Listing
+					each listing in listings
+						option(value=listing.id) ID: #{listing.id} (#{listing.title})
+				label(for="listing_id") Listing ID
+
+		//- Renter ID (either readonly or select)
+		.field.label.border.round.large
+			if userId
+				input(type="number" name="renter_id" id="renter_id" value=userId readonly)
+				label(for="renter_id") Renter ID
+			else
+				select(name="renter_id" id="renter_id" required)
+					option(value="" disabled selected) Select User
+					each user in users
+						option(value=user.id) ID: #{user.id} (#{user.name})
+				label(for="renter_id") Renter ID
+
+	.row
+		//- Check-in Date
+		.field.label.border.round.large
+			input(type="date" name="check_in" id="check_in" required)
+			label(for="check_in") Check-in Date
+
+		//- Check-out Date
+		.field.label.border.round.large
+			input(type="date" name="check_out" id="check_out" required)
+			label(for="check_out") Check-out Date
+
+	//- Guest Count
+	.field.label.border.round.large
+		input(type="number" name="guest_count" id="guest_count" value="1" required)
+		label(for="guest_count") Guest Count
+
+	//- Submit Button
+	nav.center-align.no-space
+		button(type="button" class="transparent link") Cancel
+		button(type="submit" class="transparent link") Add Booking

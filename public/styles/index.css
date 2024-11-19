@@ -114,6 +114,14 @@ button.transparent {
     margin-bottom: 20px;
 }
 
+.new-element {
+    display: none;
+}
+
+.new-element span {
+    font-size: 12px;
+}
+
 .sql-form {
     display: flex;
     flex-direction: column;

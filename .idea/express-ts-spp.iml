@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module version="4">
+  <component name="NewModuleRootManager">
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="axios" level="application" />
+    <orderEntry type="library" name="beercss" level="application" />
+    <orderEntry type="library" name="jquery-3.6.0" level="application" />
+  </component>
+</module>

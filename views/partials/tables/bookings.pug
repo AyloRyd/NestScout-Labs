@@ -1,0 +1,51 @@
+table.stripes
+	thead
+		tr
+			th
+			th ID
+			th Listing ID
+			th Renter ID
+			th Check-in
+			th Check-out
+			th Guest Count
+			th Nights
+			th Total Price
+			th Booking Date
+			th Cancellation Date
+			th Status
+	tbody
+		each booking in bookings
+			tr(id=`listings-${booking.id}`)
+				td
+					label.checkbox
+						input.row-checkbox(type="checkbox" value=booking.id)
+						span
+				td= booking.id
+				td
+					a.ajax-link(href=`/listings?id=${booking.listing_id}`)= booking.listing_id
+				td
+					a.ajax-link(href=`/users?id=${booking.renter_id}`)= booking.renter_id
+				td= new Date(booking.check_in).toLocaleDateString()
+				td= new Date(booking.check_out).toLocaleDateString()
+				td= booking.guest_count
+				td= booking.nights
+				td= `${parseFloat(booking.total_price).toFixed(2)}`
+				td= new Date(booking.booking_date).toLocaleDateString()
+				td= booking.cancellation_date ? new Date(booking.cancellation_date).toLocaleDateString() : 'N/A'
+				td= booking.status
+
+//- Bookings header for a specific user
+if typeof userName !== 'undefined' && typeof userId !== 'undefined'
+	.bookings-header.table-header.row.space-between
+		h5 Bookings of user #{userName} (user_id = #{userId})
+		button.back-to-users
+			i arrow_back
+			| Back to users
+
+//- Bookings header for a specific listing
+if typeof listingTitle !== 'undefined' && typeof listingId !== 'undefined'
+	.bookings-header.table-header.row.space-between
+		h5 Bookings of listing with listing_id = #{listingId}
+		button.back-to-listings
+			i arrow_back
+			| Back to listings

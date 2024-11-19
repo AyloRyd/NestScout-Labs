@@ -1,0 +1,58 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        title NestScout
+        link(href="https://cdn.jsdelivr.net/npm/beercss@3.7.10/dist/cdn/beer.min.css" rel="stylesheet")
+        link(rel="stylesheet" href="/styles/index.css")
+    body
+        h1 NestScout
+
+        .main
+            nav.tabbed.large
+                a.tab-link(href="/users")
+                    i account_circle
+                    span Users
+                a.tab-link(href="/listings")
+                    i home
+                    span Listings
+                a.tab-link(href="/bookings")
+                    i dehaze
+                    span Bookings
+                a.tab-link(href="/custom-sql-query")
+                    i database
+                    span Custom SQL query
+
+            .content
+                .action-menu
+                    label.checkbox
+                        input(type="checkbox")
+                        span
+                    .row
+                        button.new-listing-to-user.new-element
+                            i add
+                            span Add new listing to this user
+                        button.new-booking-to-user.new-element
+                            i add
+                            span Add new booking to this user
+                        button.new-booking-to-listing.new-element
+                            i add
+                            span Add new booking to this listing
+                        button.square.round.edit-button
+                            i edit
+                        button.square.round.delete-button
+                            i delete
+
+            button.add-button.fixed.extend.square.round.filled-button(style="display: none;")
+                i add
+                span Add new user
+
+            .overlay.blur
+            dialog
+                .dialog-form
+
+        script(type="module", src="https://cdn.jsdelivr.net/npm/beercss@3.7.10/dist/cdn/beer.min.js")
+        script(type="module", src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js")
+        script(src="https://code.jquery.com/jquery-3.6.0.min.js")
+        script(src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js")
+        script(type="module", src="/js/main.js")

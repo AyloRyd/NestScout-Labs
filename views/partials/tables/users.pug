@@ -1,0 +1,25 @@
+table.stripes
+	thead
+		tr
+			th
+			th ID
+			th Name
+			th Email
+			th Created at
+			th To user's listings
+			th To user's bookings
+	tbody
+		each user in users
+			tr(id=`users-${user.id}`)
+				td
+					label.checkbox
+						input(type="checkbox" name="selectedUsers" value=user.id)
+						span
+				td= user.id
+				td= user.name
+				td= user.email
+				td= new Date(user.created_at).toLocaleDateString()
+				td
+					button.filled-button.user-listings Listings
+				td
+					button.filled-button.user-bookings Bookings

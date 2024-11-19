@@ -1,0 +1,28 @@
+.sql-query-container
+	h5 Here you can run your own every custom SQL query to these three tables and see result in table format
+
+	form.sql-form(action="/custom-sql-query/run" method="POST")
+		.field.textarea.label.border.round.sql-query-input
+			textarea(name="sql-query" id="sql-query" required)
+			label(for="sql-query") Enter custom SQL query
+			
+		button.filled-button(type="submit") Run
+
+	.table-container
+
+script.
+	$(document).ready(function () {
+		const $textarea = $('#sql-query');
+		$textarea.on('input', function() {
+			this.style.height = 'auto';
+			this.style.height = `${this.scrollHeight + 20}px`;
+		});
+		$textarea.trigger('input');
+
+		const bg = $(".background");
+		const highResImage = new Image();
+		highResImage.src = "/images/3d-background.jpg";
+		$(highResImage).on("load", function () {
+			bg.css("background-image", `url('${highResImage.src}')`);
+		});
+	});
